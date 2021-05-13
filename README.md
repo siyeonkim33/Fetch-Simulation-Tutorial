@@ -2,13 +2,13 @@
 A guideline for Fetch robot under the simulation and real-world.
 
 # Fetch Calibration Error
-While running Fetch calibration, it suddenly stopped and failed the calibration. The error messages shown up was like below:
+While running Fetch calibration, it suddenly stopped and failed the calibration. The error messages shown up were like below:
 
 ~~~
 [ INFO] [1620895638.889939885]: Solution found in 0.034940 seconds
 [ INFO] [1620895638.890302669]: SimpleSetup: Path simplification took 0.000332 seconds and changed from 38 to 2 states
 [ERROR] [1620895638.892085254]: Computed path is not valid. Invalid states at index locations: [ 7 8 ] out of 31. Explanations follow in command line. Contacts are published on /move_group/display_contacts
-[ INFO] [1620895638.892168182]: Found a contact between 'base_link' (type 'Robot link') and 'r_gripper_finger_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
+###[ INFO] [1620895638.892168182]: Found a contact between 'base_link' (type 'Robot link') and 'r_gripper_finger_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
 [ INFO] [1620895638.892188698]: Collision checking is considered complete (collision was found and 0 contacts are stored)
 [ INFO] [1620895639.058072629]: Found a contact between 'base_link' (type 'Robot link') and 'r_gripper_finger_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
 [ INFO] [1620895639.058102328]: Collision checking is considered complete (collision was found and 0 contacts are stored)
