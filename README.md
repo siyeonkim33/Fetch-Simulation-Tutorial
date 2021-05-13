@@ -4,7 +4,7 @@ A guideline for Fetch robot under the simulation and real-world.
 # Fetch Calibration Error
 While running Fetch calibration, it suddenly stopped and failed the calibration. The error messages shown up was like below:
 
-'''c
+~~~
 [ INFO] [1620895638.889939885]: Solution found in 0.034940 seconds
 [ INFO] [1620895638.890302669]: SimpleSetup: Path simplification took 0.000332 seconds and changed from 38 to 2 states
 [ERROR] [1620895638.892085254]: Computed path is not valid. Invalid states at index locations: [ 7 8 ] out of 31. Explanations follow in command line. Contacts are published on /move_group/display_contacts
@@ -24,4 +24,4 @@ While running Fetch calibration, it suddenly stopped and failed the calibration.
 [ INFO] [1620895639.088336496]: LBKPIECE1: Created 128 (72 start + 56 goal) states in 114 cells (71 start (71 on boundary) + 43 goal (43 on boundary))
 [ INFO] [1620895639.088391980]: Solution found in 0.029098 seconds
 [ INFO] [1620895639.088727269]: SimpleSetup: Path simplification took 0.000298 seconds and changed from 42 to 2 states
-'''
+~~~
