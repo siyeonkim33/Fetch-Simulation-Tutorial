@@ -21,3 +21,5 @@ While running Fetch calibration, it suddenly stopped and failed the calibration.
 ~~~
 
 It failed to carry out its calibration at a certain step, especially, the sample 36 (in my case).
+
+Additionally, there was a simple disconneting error between joystick and the mobile platform while conducting an arm tuck. Currently, restarting Fetch was a makeshift for resolving this problem. 
