@@ -19,3 +19,5 @@ While running Fetch calibration, it suddenly stopped and failed the calibration.
 [ WARN] [1621068975.370207691]: led_finder failed to capture features.
 [ WARN] [1621068975.370251266]: Failed to capture sample 34.
 ~~~
+
+It failed to carry on its calibration at a certain step, especially, the sample 36 (in my case).
