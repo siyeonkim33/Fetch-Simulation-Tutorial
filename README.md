@@ -24,7 +24,9 @@ While running Fetch calibration, it suddenly stopped and failed the calibration.
 [ WARN] [1621073972.052525949]: Unable to move to desired state for sample 37.
 ~~~
 
-It failed to carry out its calibration at a certain step, especially, the sample 37 (in my case). 
--
+It failed to carry out the calibration at the same step, especially, the sample 37 (in my case). 
+- The initial plan was found without any collisions:
+> [ INFO] [1621073971.884625587]: Solution found in 0.027092 seconds
+- However, it seems that it failed after the simplication.
 
 Additionally, there was a simple disconneting error between joystick and the mobile platform while conducting an arm tuck. Currently, restarting Fetch was a makeshift for resolving this problem. 
