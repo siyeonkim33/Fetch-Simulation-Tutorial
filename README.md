@@ -1,7 +1,7 @@
 # Fetch-Simulation-Tutorial
 A guideline for Fetch robot under the simulation and real-world.
 
-# Fetch Calibration Error
+## Fetch Calibration Error
 While running Fetch calibration, it suddenly stopped and failed the calibration. The error messages shown up were like below:
 
 ~~~
