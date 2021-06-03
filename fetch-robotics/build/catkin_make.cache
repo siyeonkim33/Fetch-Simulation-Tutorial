@@ -1,0 +1,2 @@
+fetch_gazebo/fetch_gazebo:fetch_gazebo/fetch_gazebo_demo:fetch_gazebo/fetch_simulation:fetch_gazebo/fetchit_challenge:fetch_goal_gnrt:fetch_ros/fetch_calibration:fetch_ros/fetch_depth_layer:fetch_ros/fetch_description:fetch_ros/fetch_ikfast_plugin:fetch_ros/fetch_maps:fetch_ros/fetch_moveit_config:fetch_ros/fetch_navigation:fetch_ros/fetch_ros:fetch_ros/fetch_teleop
+-DCATKIN_DEVEL_PREFIX=/home/glab/Desktop/fetch-robotics/devel -DCMAKE_INSTALL_PREFIX=/home/glab/Desktop/fetch-robotics/install -G Unix Makefiles
