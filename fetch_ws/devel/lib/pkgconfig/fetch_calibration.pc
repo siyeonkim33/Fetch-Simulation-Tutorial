@@ -1,0 +1,8 @@
+prefix=/home/siyeon/Desktop/fetch_ws/devel
+
+Name: fetch_calibration
+Description: Description of fetch_calibration
+Version: 0.8.2
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

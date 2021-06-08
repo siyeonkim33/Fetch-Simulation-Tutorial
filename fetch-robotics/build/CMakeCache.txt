@@ -159,7 +159,7 @@ Boost_THREAD_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_thread.
 CATKIN_BLACKLIST_PACKAGES:STRING=
 
 //catkin devel space
-CATKIN_DEVEL_PREFIX:PATH=/home/glab/Desktop/fetch-robotics/devel
+CATKIN_DEVEL_PREFIX:PATH=/home/siyeon/Desktop/fetch-robotics/devel
 
 //Catkin enable testing
 CATKIN_ENABLE_TESTING:BOOL=ON
