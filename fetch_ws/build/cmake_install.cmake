@@ -145,6 +145,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/cmake_install.cmake")
   include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_depth_layer/cmake_install.cmake")
   include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_moveit_config/cmake_install.cmake")
+  include("/home/siyeon/Desktop/fetch_ws/build/cube_test/cmake_install.cmake")
 
 endif()
 

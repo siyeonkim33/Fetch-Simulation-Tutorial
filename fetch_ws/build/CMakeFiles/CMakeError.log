@@ -1,22 +1,22 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_573e2/fast"
-/usr/bin/make -f CMakeFiles/cmTC_573e2.dir/build.make CMakeFiles/cmTC_573e2.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_10894/fast"
+/usr/bin/make -f CMakeFiles/cmTC_10894.dir/build.make CMakeFiles/cmTC_10894.dir/build
 make[1]: Entering directory '/home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_573e2.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_573e2.dir/CheckSymbolExists.c.o   -c /home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_573e2
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_573e2.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_573e2.dir/CheckSymbolExists.c.o  -o cmTC_573e2 
-CMakeFiles/cmTC_573e2.dir/CheckSymbolExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_10894.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_10894.dir/CheckSymbolExists.c.o   -c /home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_10894
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10894.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_10894.dir/CheckSymbolExists.c.o  -o cmTC_10894 
+CMakeFiles/cmTC_10894.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_573e2.dir/build.make:97: recipe for target 'cmTC_573e2' failed
-make[1]: *** [cmTC_573e2] Error 1
+CMakeFiles/cmTC_10894.dir/build.make:97: recipe for target 'cmTC_10894' failed
+make[1]: *** [cmTC_10894] Error 1
 make[1]: Leaving directory '/home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_573e2/fast' failed
-make: *** [cmTC_573e2/fast] Error 2
+Makefile:126: recipe for target 'cmTC_10894/fast' failed
+make: *** [cmTC_10894/fast] Error 2
 
 File /home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
@@ -36,20 +36,20 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_1798e/fast"
-/usr/bin/make -f CMakeFiles/cmTC_1798e.dir/build.make CMakeFiles/cmTC_1798e.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_bad20/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bad20.dir/build.make CMakeFiles/cmTC_bad20.dir/build
 make[1]: Entering directory '/home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1798e.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_1798e.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
-Linking C executable cmTC_1798e
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1798e.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_1798e.dir/CheckFunctionExists.c.o  -o cmTC_1798e -lpthreads 
+Building C object CMakeFiles/cmTC_bad20.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_bad20.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_bad20
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bad20.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_bad20.dir/CheckFunctionExists.c.o  -o cmTC_bad20 -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_1798e.dir/build.make:97: recipe for target 'cmTC_1798e' failed
-make[1]: *** [cmTC_1798e] Error 1
+CMakeFiles/cmTC_bad20.dir/build.make:97: recipe for target 'cmTC_bad20' failed
+make[1]: *** [cmTC_bad20] Error 1
 make[1]: Leaving directory '/home/siyeon/Desktop/fetch_ws/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_1798e/fast' failed
-make: *** [cmTC_1798e/fast] Error 2
+Makefile:126: recipe for target 'cmTC_bad20/fast' failed
+make: *** [cmTC_bad20/fast] Error 2
 
 

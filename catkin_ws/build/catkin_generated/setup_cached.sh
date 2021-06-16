@@ -7,4 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PWD='/home/glab/Desktop/catkin_ws/build'
+export PWD='/home/siyeon/Desktop/catkin_ws/build'
