@@ -1,0 +1,8 @@
+prefix=/home/glab/Desktop/fetch_test/devel
+
+Name: fetch_ikfast_plugin
+Description: Description of fetch_ikfast_plugin
+Version: 0.8.2
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

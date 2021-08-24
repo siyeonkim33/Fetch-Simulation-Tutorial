@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://coffeetable</uri>
+      <name>table</name>
+	    <pose>0.88 0 0  1.5708 0 0</pose>
+    </include>
+    <include>
+      <uri>model://ar_tag</uri>
+      <name>ar_tag</name>
+	    <pose>0.88 0 0.7  1.5708 0 -1.5708</pose>
+    </include>
+
+    <light name='user_point_light_0' type='point'>
+      <pose frame=''>5.3 0 4.0 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>10</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+    <light name='user_point_light_3' type='point'>
+      <pose frame=''>-5.3 0 4.0 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>10</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+  </world>
+</sdf>

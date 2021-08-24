@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>fetch_object_recog</name>
+  <version>0.0.0</version>
+  <description>The fetch_object_recog package</description>
+
+  <maintainer email="siyeon@todo.todo">siyeon</maintainer>
+
+  <license>TODO</license>
+
+
+  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/fetch_object_recog</url> -->
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>cv_bridge</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

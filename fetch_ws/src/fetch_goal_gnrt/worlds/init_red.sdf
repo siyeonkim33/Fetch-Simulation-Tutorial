@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="cubes">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://coffeetable</uri>
+      <name>table</name>
+	    <pose>0.88 0 0  1.5708 0 0</pose>
+    </include>
+    <include>
+      <uri>model://plates/blue_plate</uri>
+      <name>blue_plate</name>
+	    <pose>0.6 0.3 0.575</pose>
+    </include>
+    <include>
+      <uri>model://plates/red_plate</uri>
+      <name>red_plate</name>
+	    <pose>0.6 -0.3 0.575</pose>
+    </include>
+
+    <light name='user_point_light_0' type='point'>
+      <pose frame=''>5.3 0 4.0 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>10</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+    <light name='user_point_light_3' type='point'>
+      <pose frame=''>-5.3 0 4.0 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>10</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+    <!-- Set physics parameters to hopefully improve contact behavior -->
+    <!-- Default max_step_size is 0.001 -->
+    <!-- Product of r_t_u_r and m_s_s gives target realTimeFactor, I think.  Default is 1000. -->
+    <!-- Default iters is 50 -->
+    <physics type="simbody">
+      <max_step_size>0.0005</max_step_size>  
+      <real_time_update_rate>2000</real_time_update_rate>  
+      <simbody>
+        <solver>
+          <iters>100</iters>  
+        </solver>
+        <constraints>
+          <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
+          <contact_surface_layer>0.0001</contact_surface_layer>
+        </constraints>
+      </simbody>
+    </physics>  
+  </world>
+</sdf>
