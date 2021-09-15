@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#use 4 models
 import sys
 import copy
 import os
@@ -22,6 +21,14 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes, Grasp
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
+from tf.transformations import quaternion_from_euler, quaternion_multiply
+
+from tf import (
+    TransformListener, 
+    Transformer,
+    TransformerROS
+)
+
 from gazebo_msgs.srv import (
     SpawnModel,
     DeleteModel,
@@ -29,6 +36,7 @@ from gazebo_msgs.srv import (
 
 from geometry_msgs.msg import (
     PoseStamped,
+    PointStamped,
     Pose,
     Point,
     Quaternion,
@@ -61,6 +69,9 @@ class GraspingClient(object):
         self.scene = PlanningSceneInterface("base_link")
         self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
         self.move_group = MoveGroupInterface("arm", "base_link")
+        self.angle_max = 180
+        self.angle_step = 20
+        self.quaternion_multiply = quaternion_multiply
 
         find_topic = "basic_grasping_perception/find_objects"
         rospy.loginfo("Waiting for %s..." % find_topic)
@@ -73,53 +84,69 @@ class GraspingClient(object):
         goal.plan_grasps = True
         self.find_client.send_goal(goal)
         self.find_client.wait_for_result(rospy.Duration(5.0))
-        find_result = self.find_client.get_result()
-
-        rospy.loginfo("Found %d objects" % len(find_result.objects))
+        find_result = self.find_client.get_result()     # find graspable objects
 
         # remove previous objects
-        #for name in self.scene.getKnownCollisionObjects():
-        #    self.scene.removeCollisionObject(name, False)
-        #for name in self.scene.getKnownAttachedObjects():
-        #    self.scene.removeAttachedObject(name, False)
+        for name in self.scene.getKnownCollisionObjects():
+            self.scene.removeCollisionObject(name, False)
+        for name in self.scene.getKnownAttachedObjects():
+            self.scene.removeAttachedObject(name, False)
         self.scene.waitForSync()
 
         # insert objects to scene
         objects = list()
+        print("update scene")
+        print (objects)
         idx = -1
         for obj in find_result.objects:
             idx += 1
+            obj.object.name = "object%d"%idx
+            self.scene.addSolidPrimitive(obj.object.name,
+                                         obj.object.primitives[0],
+                                         obj.object.primitive_poses[0],
+                                         use_service=False)
+            if obj.object.primitive_poses[0].position.x < 0.85:
+                objects.append([obj, obj.object.primitive_poses[0].position.z])
 
-            #obj.object.name = find_result.objects[idx].name -> 'GraspableObject' object has no attribute 'name
-            obj.object.name = "obj%d"%idx
-            self.scene.addSolidPrimitive(obj.object.name, obj.object.primitives[0], obj.object.primitive_poses[0], use_service=False)
-            if obj.object.primitive_poses[0].position.x < 1.3: #< 0.85:
-                objects.append([obj, obj.object.primitive_poses[0].position.y]) ##should be it's goal position,,,
-                #objects.append([obj, obj.object.primitive_poses[0].position.z])
+        for obj in find_result.support_surfaces:
+            # extend surface to floor, and make wider since we have narrow field of view
+            height = obj.primitive_poses[0].position.z
+            obj.primitives[0].dimensions = [obj.primitives[0].dimensions[0],
+                                            1.5,  # wider
+                                            obj.primitives[0].dimensions[2] + height]
+            obj.primitive_poses[0].position.z += -height/2.0
 
-        #for obj in find_result.support_surfaces:
-        #    # extend surface to floor, and make wider since we have narrow field of view
-        #    height = obj.primitive_poses[0].position.z
-        #    obj.primitives[0].dimensions = [obj.primitives[0].dimensions[0], 1.5,  # wider
-        #                                    obj.primitives[0].dimensions[2] + height]
-        #    obj.primitive_poses[0].position.z += -height/2.0
+            # add to scene
+            self.scene.addSolidPrimitive(obj.name,
+                                         obj.primitives[0],
+                                         obj.primitive_poses[0],
+                                         use_service=False)
 
-        #    # add to scene
-        #    self.scene.addSolidPrimitive(obj.name, obj.primitives[0], obj.primitive_poses[0])
         self.scene.waitForSync()
 
         # store for grasping
+        #self.objects = find_result.objects
         self.surfaces = find_result.support_surfaces
 
-        # store graspable objects by Z -> y
+        # store graspable objects by Z
         objects.sort(key=lambda object: object[1])
-        #objects.reverse()
+        objects.reverse()
         self.objects = [object[0] for object in objects]
+        #for object in objects:
+        #    print(object[0].object.name, object[1])
 
-#obj0_goal = (0, Pose(position=Point(x=1.114, y= -0.858, z= 0.65), orientation=Quaternion(x=0, y=0, z=0, w=1)))
 
-    def getGraspableObject(self, goal_obj_x, goal_obj_y):
+    """
+        objects.grasps
+        objects.object.primitives[0].dimensions[0]
+        obj.object.primitive_poses[0].position.z
+        return obj.object, obj.grasps
+    """
+    def getGraspableObject(self):
         graspable = None
+        print("========= OBJECT ========")
+        print(len(self.objects))
+
         for obj in self.objects:
             # need grasps
             if len(obj.grasps) < 1:
@@ -131,67 +158,16 @@ class GraspingClient(object):
                obj.object.primitives[0].dimensions[0] > 0.25 or \
                obj.object.primitives[0].dimensions[0] < 0.03 or \
                obj.object.primitives[0].dimensions[0] > 0.25:
-                print("!!!!!!!!!!!!!!!A!!!!!!!!!!!!!!!!")
                 continue
-
             # has to be on table
-            if obj.object.primitive_poses[0].position.z < 0.35:
-                print("!!!!!!!!!!!!!!!B!!!!!!!!!!!!!!!!")
+            if obj.object.primitive_poses[0].position.z < 0.5:
                 continue
-            if obj.object.primitive_poses[0].position.x < 0.3:
-                print("!!!!!!!!!!!!!!!C!!!!!!!!!!!!!!!!")
-                continue
-
-            # get goal object
-            if ( abs(obj.object.primitive_poses[0].position.x - goal_obj_x) > 0.09):
-                print("!!!!!!!!!!!!!!!D!!!!!!!!!!!!!!!!")
-                continue
-            if ( abs(obj.object.primitive_poses[0].position.y - goal_obj_y) > 0.09):
-                print("!!!!!!!!!!!!!!!E!!!!!!!!!!!!!!!!")
-                continue
-
-            print("**************************************Object Name: ", obj.object.name)
-            print("Object Pose: ", obj.object.primitive_poses[0], obj.object.primitives[0])
-
+            print obj.object.primitive_poses[0], obj.object.primitives[0]
             return obj.object, obj.grasps
         # nothing detected
         return None, None
-
-    def getSupportSurface(self, name):
-        for surface in self.support_surfaces:
-            if surface.name == name:
-                return surface
-        return None
-
-    def getPlaceLocation(self):
-        pass
-
-    def pick(self, block, grasps):
-        success, pick_result = self.pickplace.pick_with_retry(block.name, grasps, support_name=block.support_surface, scene=self.scene)
-        self.pick_result = pick_result
-        return success
-
-    def place(self, block, pose_stamped):
-        places = list()
-        l = PlaceLocation()
-        l.place_pose.pose = pose_stamped.pose
-        l.place_pose.header.frame_id = pose_stamped.header.frame_id
-
-        # copy the posture, approach and retreat from the grasp used
-        l.post_place_posture = self.pick_result.grasp.pre_grasp_posture
-        l.pre_place_approach = self.pick_result.grasp.pre_grasp_approach
-        l.post_place_retreat = self.pick_result.grasp.post_grasp_retreat
-        places.append(copy.deepcopy(l))
-        # create another several places, rotate each by 360/m degrees in yaw direction
-        m = 16 # number of possible place poses
-        pi = 3.141592653589
-        for i in range(0, m-1):
-            #l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 2 * pi / m)
-            places.append(copy.deepcopy(l))
-
-        success, place_result = self.pickplace.place_with_retry(block.name, places, scene=self.scene)
-        return success
-
+        
+    ## tuck pose
     def tuck(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -201,6 +177,7 @@ class GraspingClient(object):
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
 
+    # stow pose
     def stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -211,6 +188,7 @@ class GraspingClient(object):
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
 
+    # intermediate stow pose
     def intermediate_stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -220,131 +198,76 @@ class GraspingClient(object):
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
 
-#===================================================================================
-def spawn_gazebo_model(model_path, model_name, model_pose, reference_frame="world"):
-  model_xml = ''
-  with open(model_path, "r") as model_file:
-     model_xml = model_file.read().replace('\n', '')
-  rospy.wait_for_service('/gazebo/spawn_sdf_model')
-  try:
-     spawn_sdf = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
-     resp_sdf = spawn_sdf(model_name, model_xml, "/", model_pose, reference_frame)
-  except rospy.ServiceException, e:
-     rospy.logerr("Spawn SDF service call failed: {0}".format(e))
-def delete_gazebo_model(models):
-  """
-  Delete model in gazebo
-  """
-  try:
-    delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
-    for a_model in models:
-      resp_delete = delete_model(a_model)
-  except rospy.ServiceException, e:
-    rospy.loginfo("Delete Model service call failed: {0}".format(e))
-#===================================================================================
+
 if __name__ == "__main__":
     rospack = rospkg.RosPack()
-    pack_path = rospack.get_path('fetch_gazebo')
-    rospy.init_node("demo") # Create a node
+    pack_path = rospack.get_path('fetch_goal_gnrt')
+    rospy.init_node("fetch_pick_place") # Create a node
+
+    # get the height of the head pose and look at the origin at half of the head height
+    pt_head = PointStamped()
+    t = Transformer()
+    listener = TransformListener()
 
     # Make sure sim time is working
     while not rospy.Time.now():
         pass
 
     # Setup clients
+    #move_base = MoveBaseClient()
+    #torso_action = FollowTrajectoryClient("torso_controller", ["torso_lift_joint"])
     head_action = PointHeadClient()
-    grasping_client = GraspingClient() # Control scene, robot, arm
-    grasping_client.stow() # Go to a default pose
+
+    # Head camera looks at the certain point 
+    pt_head.header.frame_id = "/head_camera_rgb_optical_frame"
+    pt_head = listener.transformPoint("/base_link", pt_head)
+    rospy.loginfo("the head position point: %f, %f, %f", pt_head.point.x, pt_head.point.y, pt_head.point.z)
+    head_action.look_at(1.0, 0.0, pt_head.point.z/2, "base_link")   # half of the head camera's position
+
+    # Setup a Grasping client
+    grasping_client = GraspingClient()
     cube_in_grapper = False
+    rospy.loginfo("stow")
+    grasping_client.stow() # Go to a default pose
 
-    init_pose = [Pose(position=Point(x=0.8, y=-0.25, z=0.5), orientation=Quaternion(x=1.61, y=0, z=1.61, w=1)),
-                 Pose(position=Point(x=0.8, y=-0.1,  z=0.5), orientation=Quaternion(x=0, y=1.61, z=1.6, w=1)),
-                 Pose(position=Point(x=0.8, y=0.07, z=0.5), orientation=Quaternion(x=1.61, y=0, z=1.6, w=1)),
-                 Pose(position=Point(x=0.8, y=0.25, z=0.5), orientation=Quaternion(x=0, y=1.61, z=0, w=1))]
-
-    obj0_goal = (0, Pose(position=Point(x=0.65, y= 0.1,  z= 0.5), orientation=Quaternion(x=0, y=1.61, z=0, w=1)))
-    obj1_goal = (1, Pose(position=Point(x=0.65, y= -0.2,  z= 0.5), orientation=Quaternion(x=0, y=1.61, z=0, w=1)))
-    obj2_goal = (2, Pose(position=Point(x=0.65, y= -0.1,  z= 0.5),  orientation=Quaternion(x=0, y=1.61, z=0, w=1)))
-    obj3_goal = (3, Pose(position=Point(x=0.65, y= 0.2, z= 0.5), orientation=Quaternion(x=0, y=1.61, z=0, w=1)))
-
-    obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal]
-
-    sorted_obj_goal = sorted(obj_goal, key=lambda obj: (obj[1].position.y, -obj[1].position.x))
-
-    object_no = 4
-    for b in range(0, object_no): #generate block objects
-    #m0: apple**, m1: cracker, m2: mustard, m3: spam**, m4: spam, m5:tomato***, m6:tomato
-    #mm0: apple, mm1: spam, mm2: spam, mm3: toamto
-        #object_path = os.path.join(pack_path, 'models', 'block2', 'm'+str(0), 'model.sdf')
-        object_path = os.path.join(pack_path, 'models', 'block', 'mm'+str(b)+'.sdf')
-        object_name = 'obj'+str(b)
-        object_pose = init_pose[b]
-        spawn_gazebo_model(object_path, object_name, object_pose)
-        time.sleep(1.0)
-
-    obj_i = -1
     while not rospy.is_shutdown():
-        obj_i += 1
-        head_action.look_at(1.2, 0.0, 0.0, "base_link")
-        print("*******Waiting for lookat 1")
-        time.sleep(2.0)
-
+        head_action.look_at(1.0, 0.0, pt_head.point.z/3, "base_link")   # 1/3 position of the head camera
 
         # Get block to pick
         fail_ct = 0
         while not rospy.is_shutdown() and not cube_in_grapper:
             rospy.loginfo("Picking object...")
-            print("*******obj index: ", obj_i)
+
+            " ---------------- HERE ----------------"
             grasping_client.updateScene()
-
-            print("*******goal y index: ", sorted_obj_goal[obj_i][0])
-            print("*******goal object y: ", init_pose[sorted_obj_goal[obj_i][0]].position.y)
-
-            cube, grasps = grasping_client.getGraspableObject(init_pose[sorted_obj_goal[obj_i][0]].position.x, init_pose[sorted_obj_goal[obj_i][0]].position.y)
+            cube, grasps = grasping_client.getGraspableObject()
+            " --------------------------------------"
 
             if cube == None:
                 rospy.logwarn("Perception failed.")
-                # grasping_client.intermediate_stow()
                 grasping_client.stow()
-                head_action.look_at(1.2, 0.0, 0.0, "base_link")
+                head_action.look_at(1.2, 0.0, pt_head.point.z/3, "base_link")
                 continue
 
             # Pick the block
+            # if success, then go into the if statement -> then break the pick loop
             if grasping_client.pick(cube, grasps):
                 cube_in_grapper = True
                 break
-            print("Pick Success")
-            rospy.logwarn("Grasping failed.")
+            # otherwise, retry the loop
+            rospy.logwarn("Grasping failed.")   
             grasping_client.stow()
+
+            # if the number of trials are more than 15 times, it will be considered as failure.
             if fail_ct > 15:
                 fail_ct = 0
                 break
             fail_ct += 1
 
-        # Place the block
-        while not rospy.is_shutdown() and cube_in_grapper:
-            rospy.loginfo("Placing object...")
-            pose = PoseStamped()
-            pose.pose = cube.primitive_poses[0]
-            pose.pose.position = sorted_obj_goal[obj_i][1].position
-            #pose.pose.orientation = sorted_obj_goal[obj_i][1].orientation   #YS TODO: orientation
-            pose.header.frame_id = cube.header.frame_id
-            if grasping_client.place(cube, pose):
-                cube_in_grapper = False
-                time.sleep(1.0)
-                grasping_client.stow()
-                break
-            rospy.logwarn("Placing failed.")
-            #grasping_client.intermediate_stow()
-            #grasping_client.stow()
-            if fail_ct > 15:
-                fail_ct = 0
-                break
-            fail_ct += 1
-        # Tuck the arm, lower the torso
 
-#        obj_i += 1
-        grasping_client.intermediate_stow()
-        grasping_client.stow()
-        rospy.loginfo("Finished")
-        #torso_action.move_to([0.0, ])
+    # Tuck the arm, lower the torso
+    rospy.loginfo("intermediate stow")
+    grasping_client.intermediate_stow() # Go to a default pose
+    rospy.loginfo("stow")
+    grasping_client.stow() # Go to a default pose
+    rospy.loginfo("Finished")

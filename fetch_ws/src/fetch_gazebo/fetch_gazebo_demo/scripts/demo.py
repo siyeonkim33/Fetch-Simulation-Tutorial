@@ -144,6 +144,8 @@ class GraspingClient(object):
         # insert objects to scene
         idx = -1
         for obj in find_result.objects:
+            print("%s block is added" % obj.object.properties[0].name)
+
             idx += 1
             obj.object.name = "object%d"%idx
             self.scene.addSolidPrimitive(obj.object.name,

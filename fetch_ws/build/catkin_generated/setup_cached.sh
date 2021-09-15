@@ -7,6 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PATH='/opt/ros/melodic/bin:/home/siyeon/gems/bin:/home/siyeon/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
-export PKG_CONFIG_PATH='/home/siyeon/Desktop/catkin_ws/devel/lib/pkgconfig:/opt/ros/melodic/lib/pkgconfig'
 export PWD='/home/siyeon/Desktop/fetch_ws/build'
