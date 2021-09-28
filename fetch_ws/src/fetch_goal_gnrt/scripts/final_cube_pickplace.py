@@ -93,8 +93,8 @@ class GraspingClient(object):
         self.scene = PlanningSceneInterface("base_link")
         self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
         self.move_group = MoveGroupInterface("arm", "base_link")
-        self.place_group = moveit_commander.MoveGroupCommander("arm")
-        self.gripper_group = moveit_commander.MoveGroupCommander("gripper")
+        self.place_group = moveit_commander.MoveGroupCommander("arm", wait_for_servers= 30.0)
+        self.gripper_group = moveit_commander.MoveGroupCommander("gripper", wait_for_servers= 30.0)
 
         find_topic = "basic_grasping_perception/find_objects"
         rospy.loginfo("Waiting for %s..." % find_topic)
@@ -120,16 +120,41 @@ class GraspingClient(object):
         objects = list()
         idx = -1
         for obj in find_result.objects:
-            print("%s block is added" % obj.object.properties[0].name)
 
+            print(obj.object.primitives[0].dimensions)
             idx += 1
-            obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
-            self.scene.addSolidPrimitive(obj.object.name,
-                                         obj.object.primitives[0],
-                                         obj.object.primitive_poses[0],
-                                         use_service=False)
-            if obj.object.primitive_poses[0].position.x < 0.85:
-                objects.append([obj, obj.object.primitive_poses[0].position.z])
+            if (obj.object.primitives[0].dimensions[0] > 0.075 or 
+                obj.object.primitives[0].dimensions[1] > 0.075 or
+                obj.object.primitives[0].dimensions[2] > 0.075):
+                idx-=1
+                print("%s basket is added" % obj.object.properties[0].name)
+                obj.object.name = "basket_%s"% obj.object.properties[0].name
+                obj.object.primitives[0].dimensions = [0.4, 0.3, 0.32]
+                if obj.object.properties[0].name.find("red"):
+                    obj.object.primitive_poses[0].position.x = 0.8
+                    obj.object.primitive_poses[0].position.y = -0.42
+                    obj.object.primitive_poses[0].position.z = 0.8
+                else:
+                    obj.object.primitive_poses[0].position.x = 0.8
+                    obj.object.primitive_poses[0].position.y = 0.34
+                    obj.object.primitive_poses[0].position.z = 0.8                   
+                self.scene.addSolidPrimitive(obj.object.name,
+                                            obj.object.primitives[0],
+                                            obj.object.primitive_poses[0],
+                                            use_service=False)
+                continue
+            else:
+                print("%s block is added" % obj.object.properties[0].name)
+                
+                obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
+                self.scene.addSolidPrimitive(obj.object.name,
+                                            obj.object.primitives[0],
+                                            obj.object.primitive_poses[0],
+                                            use_service=False)
+                if obj.object.primitive_poses[0].position.x < 0.85:
+                    objects.append([obj, obj.object.primitive_poses[0].position.z])
+
+
 
         for obj in find_result.support_surfaces:
             # extend surface to floor, and make wider since we have narrow field of view
@@ -288,7 +313,7 @@ class GraspingClient(object):
 
 if __name__ == "__main__":
     # Create a node
-    rospy.init_node("demo")
+    rospy.init_node("fetch_cube_pick_place")
 
     # Make sure sim time is working
     while not rospy.Time.now():
@@ -342,10 +367,10 @@ if __name__ == "__main__":
             # set the goal position
             if (cube.name.find("red") == 0):
                 print("find red")
-                goal = [0.6, -0.3, 0.9]
+                goal = [0.85, 0.4, 1.1]
             else:
                 print("find blue")
-                goal = [0.6, 0.3, 0.9]
+                goal = [0.85, -0.4, 1.1]
 
             if grasping_client.place(cube, goal):
                 cube_in_grapper = False
