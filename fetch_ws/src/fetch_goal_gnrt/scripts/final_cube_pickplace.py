@@ -19,11 +19,12 @@ from control_msgs.msg import (
     GripperCommandAction, 
     GripperCommandGoal,
 )
-from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
+from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal, Object
 from geometry_msgs.msg import PoseStamped, Pose
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes, DisplayTrajectory
+from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes, DisplayTrajectory, CollisionObject
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from shape_msgs.msg import SolidPrimitive
 # from fetch_driver_msgs.msg import GripperState
 
 # Move base using navigation stack
@@ -98,12 +99,14 @@ class GraspingClient(object):
 
     def __init__(self):
         self.scene = PlanningSceneInterface("base_link")
-        self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
+        # self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
         self.move_group = MoveGroupInterface("arm", "base_link")
+
         self.place_group = moveit_commander.MoveGroupCommander("arm", wait_for_servers= 30.0)
-        self.gripper_group = moveit_commander.MoveGroupCommander("gripper", wait_for_servers= 30.0)
         self.place_group.set_max_velocity_scaling_factor(0.8)
         self.place_group.set_max_acceleration_scaling_factor(0.8)
+        self.gripper_group = moveit_commander.MoveGroupCommander("gripper", wait_for_servers= 30.0)
+
 
         find_topic = "basic_grasping_perception/find_objects"
         rospy.loginfo("Waiting for %s..." % find_topic)
@@ -130,36 +133,16 @@ class GraspingClient(object):
         idx = -1
         for obj in find_result.objects:
             idx += 1
-            if (obj.object.primitives[0].dimensions[0] > 0.075 or 
-                obj.object.primitives[0].dimensions[1] > 0.075 or
-                obj.object.primitives[0].dimensions[2] > 0.075):
-                idx-=1
-                print("%s basket is added" % obj.object.properties[0].name)
-                obj.object.name = "basket_%s"% obj.object.properties[0].name
-                obj.object.primitives[0].dimensions = [0.4, 0.3, 0.32]
-                if obj.object.properties[0].name.find("red"):
-                    obj.object.primitive_poses[0].position.x = 0.8
-                    obj.object.primitive_poses[0].position.y = -0.42
-                    obj.object.primitive_poses[0].position.z = 0.8
-                else:
-                    obj.object.primitive_poses[0].position.x = 0.8
-                    obj.object.primitive_poses[0].position.y = 0.34
-                    obj.object.primitive_poses[0].position.z = 0.8                   
-                self.scene.addSolidPrimitive(obj.object.name,
-                                            obj.object.primitives[0],
-                                            obj.object.primitive_poses[0],
-                                            use_service=False)
-                continue
-            else:
-                print("%s block is added" % obj.object.properties[0].name)
-                
-                obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
-                self.scene.addSolidPrimitive(obj.object.name,
-                                            obj.object.primitives[0],
-                                            obj.object.primitive_poses[0],
-                                            use_service=False)
-                if obj.object.primitive_poses[0].position.x < 0.85:
-                    objects.append([obj, obj.object.primitive_poses[0].position.z])
+
+            print("%s block is added" % obj.object.properties[0].name)
+            
+            obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
+            self.scene.addSolidPrimitive(obj.object.name,
+                                        obj.object.primitives[0],
+                                        obj.object.primitive_poses[0],
+                                        use_service=False)
+            if obj.object.primitive_poses[0].position.x < 0.85:
+                objects.append([obj, obj.object.primitive_poses[0].position.z])
 
 
 
@@ -175,6 +158,35 @@ class GraspingClient(object):
             self.scene.addSolidPrimitive(obj.name,
                                          obj.primitives[0],
                                          obj.primitive_poses[0],
+                                         use_service=False)
+
+        # individually, add baskets
+        obj = CollisionObject()
+        pos = Pose()
+        names = ["red", "blue"]
+        y_pos = [-0.6, 0.6]
+        for i in range(0,len(names)):
+            print("%s basket is added" % names[i])
+            obj.id = "basket_%s"% names[i]
+            obj.header.frame_id = "base_link"
+            obj.operation = obj.ADD
+
+            basket = SolidPrimitive()
+            basket.type = basket.BOX
+            basket.dimensions = (0.4, 0.3, 0.32)
+
+            pos.position.x = 0.8
+            pos.position.z = 0.8
+
+            pos.position.y = y_pos[i]
+                
+            obj.primitives.append(basket)
+            obj.primitive_poses.append(pos)        
+
+            # add to scene
+            self.scene.addSolidPrimitive(obj.id,
+                                         obj.primitives[i],
+                                         obj.primitive_poses[i],
                                          use_service=False)
 
         self.scene.waitForSync()
@@ -224,42 +236,39 @@ class GraspingClient(object):
     def getPlaceLocation(self):
         pass
 
-    def openGripper(self):
-        print("Gripper open ... ")
-        # Open the gripper
-        joint_goal = self.gripper_group.get_current_joint_values()
-        print("current_gripper value", joint_goal)
-        joint_goal[0] = 0.04
-        joint_goal[1] = 0.04
-        print("current_gripper value", joint_goal)
-        
-        self.gripper_group.go(joint_goal, wait=True)
-        self.gripper_group.stop()
-
-    def closedGripper(self):
-        # Open the gripper
-        joint_goal = self.gripper_group.get_current_joint_values()
-        joint_goal[0] = 0.00
-        joint_goal[1] = 0.00
-        self.gripper_group.go(joint_goal, wait=True)
-        self.gripper_group.stop()
-
-
-    # def all_close(self, goal, actual, tolerance):
-    #     all_equal = True
-
-    #     if abs(actual - goal) > tolerance:
-    #         return False
-
-    #     return True
 
     def pick(self, block, grasps):
-        success, pick_result = self.pickplace.pick_with_retry(block.name,
-                                                              grasps,
-                                                              support_name=block.support_surface,
-                                                              scene=self.scene)
-        self.pick_result = pick_result
-        return success
+
+        for i in range(len(grasps)):
+            # set pre_grasp pose
+            print("pre_grasping ...", i)
+            self.pose_target = Pose()
+            self.pose_target.orientation = grasps[i].grasp_pose.pose.orientation
+            self.pose_target.position.x = grasps[i].grasp_pose.pose.position.x
+            self.pose_target.position.y = grasps[i].grasp_pose.pose.position.y
+            self.pose_target.position.z = grasps[i].grasp_pose.pose.position.z + 0.1
+
+            self.place_group.set_pose_target(self.pose_target)
+            plan = self.place_group.go(wait=True)
+            
+            if plan:
+                # approach to grasping pose
+                print("approaching ...")
+                self.pose_target.position.z = grasps[i].grasp_pose.pose.position.z + 0.02
+                self.place_group.set_pose_target(self.pose_target)
+                plan = self.place_group.go(wait=True)
+                self.pick_num = i
+
+                return True
+
+        print("failed every picking ...")
+        return False
+
+    def liftup(self, block, grasps):
+        print("lifting up ...")
+        self.pose_target.position.z = grasps[self.pick_num].grasp_pose.pose.position.z + 0.2
+        self.place_group.set_pose_target(self.pose_target)
+        plan = self.place_group.go(wait=True)
 
     def place(self, block, goal):
         # eef_link = self.place_group.get_end_effector_link()
@@ -327,7 +336,7 @@ class GripperClient(object):
         self.client.wait_for_server()
 
     def command(self, position, effort):
-        print("1")
+        print("gripper controlling ... ")
         self.goal.command.position = position
         self.goal.command.max_effort = effort
         self.client.send_goal(self.goal)
@@ -345,17 +354,12 @@ if __name__ == "__main__":
     grasping_client = GraspingClient()
     gripper_client = GripperClient()
 
-    # gripper_client.command(position=0.0, effort=-50.0)
-    # rospy.sleep(rospy.Duration(10.0))
-    # gripper_client.command(position=0.1, effort=50.0)
-    # rospy.sleep(rospy.Duration(10.0))
 
     grasping_client.updateScene()
     grasping_client.stow()
 
     cube_in_grapper = False
-    success_pickplace = 0
-
+    # success_pickplace = 0
 
 
     while not rospy.is_shutdown():
@@ -365,6 +369,8 @@ if __name__ == "__main__":
         fail_ct = 0
         while not rospy.is_shutdown() and not cube_in_grapper:
             rospy.loginfo("Picking object...")
+
+
             grasping_client.updateScene()
             cube, grasps = grasping_client.getGraspableObject()
 
@@ -376,7 +382,17 @@ if __name__ == "__main__":
                 continue
 
             # Pick the block
+        
+            # open the gripper
+            gripper_client.command(position=0.08, effort=50.0)
             if grasping_client.pick(cube, grasps):
+                # close the gripper
+                gripper_client.command(position=0.0, effort=-50.0)
+                    
+                rospy.Duration(15.0)
+                # lift the object
+                grasping_client.liftup(cube, grasps)
+                
                 cube_in_grapper = True
                 break
             rospy.logwarn("Grasping failed.")
@@ -386,7 +402,7 @@ if __name__ == "__main__":
                 break
             fail_ct += 1
 
-
+        # if(gripper_client.)
         print("placing...", cube.name)
         # Place the block
         while not rospy.is_shutdown() and cube_in_grapper:
@@ -394,17 +410,17 @@ if __name__ == "__main__":
 
             # set the goal position
             if (cube.name.find("red") == 0):
-                print("find red")
-                goal = [0.85, 0.4, 1.1]
+                print("find red and its goal...")
+                goal = [0.85, 0.6, 1.1]
             else:
-                print("find blue")
-                goal = [0.85, -0.4, 1.1]
+                print("find blue and its goal...")
+                goal = [0.85, -0.6, 1.1]
 
             if grasping_client.place(cube, goal):
-                gripper_client.command(position=0.1, effort=50.0)
-                rospy.sleep(rospy.Duration(10.0))
+
+                gripper_client.command(position=0.08, effort=50.0)
                 cube_in_grapper = False
-                success_pickplace +=1
+                # success_pickplace +=1
                 break
             rospy.logwarn("Placing failed.")
             grasping_client.intermediate_stow()
@@ -413,11 +429,11 @@ if __name__ == "__main__":
             if fail_ct > 15:
                 fail_ct = 0
                 break
-            # if all pick-and-places are done, break the loop
-            if success_pickplace > 5:
-                break
+
             fail_ct += 1
         # Tuck the arm, lower the torso
+        rospy.sleep(rospy.Duration(10.0))
+
         grasping_client.intermediate_stow()
         grasping_client.stow()
         rospy.loginfo("Finished")

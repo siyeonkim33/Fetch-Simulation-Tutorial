@@ -38,5 +38,5 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(fetch_arm_pick_place scripts/pick_cubes.cpp)
-target_link_libraries(fetch_arm_pick_place ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+# add_executable(fetch_arm_pick_place scripts/pick_cubes.cpp)
+# target_link_libraries(fetch_arm_pick_place ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})

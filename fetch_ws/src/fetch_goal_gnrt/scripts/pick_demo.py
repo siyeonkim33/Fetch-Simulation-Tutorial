@@ -18,72 +18,72 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
-# Move base using navigation stack
-class MoveBaseClient(object):
+# # Move base using navigation stack
+# class MoveBaseClient(object):
 
-    def __init__(self):
-        self.client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
-        rospy.loginfo("Waiting for move_base...")
-        self.client.wait_for_server()
+#     def __init__(self):
+#         self.client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+#         rospy.loginfo("Waiting for move_base...")
+#         self.client.wait_for_server()
 
-    def goto(self, x, y, theta, frame="map"):
-        move_goal = MoveBaseGoal()
-        move_goal.target_pose.pose.position.x = x
-        move_goal.target_pose.pose.position.y = y
-        move_goal.target_pose.pose.orientation.z = sin(theta/2.0)
-        move_goal.target_pose.pose.orientation.w = cos(theta/2.0)
-        move_goal.target_pose.header.frame_id = frame
-        move_goal.target_pose.header.stamp = rospy.Time.now()
+#     def goto(self, x, y, theta, frame="map"):
+#         move_goal = MoveBaseGoal()
+#         move_goal.target_pose.pose.position.x = x
+#         move_goal.target_pose.pose.position.y = y
+#         move_goal.target_pose.pose.orientation.z = sin(theta/2.0)
+#         move_goal.target_pose.pose.orientation.w = cos(theta/2.0)
+#         move_goal.target_pose.header.frame_id = frame
+#         move_goal.target_pose.header.stamp = rospy.Time.now()
 
-        # TODO wait for things to work
-        self.client.send_goal(move_goal)
-        self.client.wait_for_result()
+#         # TODO wait for things to work
+#         self.client.send_goal(move_goal)
+#         self.client.wait_for_result()
 
-# Send a trajectory to controller
-class FollowTrajectoryClient(object):
+# # Send a trajectory to controller
+# class FollowTrajectoryClient(object):
 
-    def __init__(self, name, joint_names):
-        self.client = actionlib.SimpleActionClient("%s/follow_joint_trajectory" % name,
-                                                   FollowJointTrajectoryAction)
-        rospy.loginfo("Waiting for %s..." % name)
-        self.client.wait_for_server()
-        self.joint_names = joint_names
+#     def __init__(self, name, joint_names):
+#         self.client = actionlib.SimpleActionClient("%s/follow_joint_trajectory" % name,
+#                                                    FollowJointTrajectoryAction)
+#         rospy.loginfo("Waiting for %s..." % name)
+#         self.client.wait_for_server()
+#         self.joint_names = joint_names
 
-    def move_to(self, positions, duration=5.0):
-        if len(self.joint_names) != len(positions):
-            print("Invalid trajectory position")
-            return False
-        trajectory = JointTrajectory()
-        trajectory.joint_names = self.joint_names
-        trajectory.points.append(JointTrajectoryPoint())
-        trajectory.points[0].positions = positions
-        trajectory.points[0].velocities = [0.0 for _ in positions]
-        trajectory.points[0].accelerations = [0.0 for _ in positions]
-        trajectory.points[0].time_from_start = rospy.Duration(duration)
-        follow_goal = FollowJointTrajectoryGoal()
-        follow_goal.trajectory = trajectory
+#     def move_to(self, positions, duration=5.0):
+#         if len(self.joint_names) != len(positions):
+#             print("Invalid trajectory position")
+#             return False
+#         trajectory = JointTrajectory()
+#         trajectory.joint_names = self.joint_names
+#         trajectory.points.append(JointTrajectoryPoint())
+#         trajectory.points[0].positions = positions
+#         trajectory.points[0].velocities = [0.0 for _ in positions]
+#         trajectory.points[0].accelerations = [0.0 for _ in positions]
+#         trajectory.points[0].time_from_start = rospy.Duration(duration)
+#         follow_goal = FollowJointTrajectoryGoal()
+#         follow_goal.trajectory = trajectory
 
-        self.client.send_goal(follow_goal)
-        self.client.wait_for_result()
+#         self.client.send_goal(follow_goal)
+#         self.client.wait_for_result()
 
-# Point the head using controller
-class PointHeadClient(object):
+# # Point the head using controller
+# class PointHeadClient(object):
 
-    def __init__(self):
-        self.client = actionlib.SimpleActionClient("head_controller/point_head", PointHeadAction)
-        rospy.loginfo("Waiting for head_controller...")
-        self.client.wait_for_server()
+#     def __init__(self):
+#         self.client = actionlib.SimpleActionClient("head_controller/point_head", PointHeadAction)
+#         rospy.loginfo("Waiting for head_controller...")
+#         self.client.wait_for_server()
 
-    def look_at(self, x, y, z, frame, duration=1.0):
-        goal = PointHeadGoal()
-        goal.target.header.stamp = rospy.Time.now()
-        goal.target.header.frame_id = frame
-        goal.target.point.x = x
-        goal.target.point.y = y
-        goal.target.point.z = z
-        goal.min_duration = rospy.Duration(duration)
-        self.client.send_goal(goal)
-        self.client.wait_for_result()
+#     def look_at(self, x, y, z, frame, duration=1.0):
+#         goal = PointHeadGoal()
+#         goal.target.header.stamp = rospy.Time.now()
+#         goal.target.header.frame_id = frame
+#         goal.target.point.x = x
+#         goal.target.point.y = y
+#         goal.target.point.z = z
+#         goal.min_duration = rospy.Duration(duration)
+#         self.client.send_goal(goal)
+#         self.client.wait_for_result()
 
 # Tools for grasping
 class GraspingClient(object):
@@ -92,6 +92,10 @@ class GraspingClient(object):
         self.scene = PlanningSceneInterface("base_link")
         self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
         self.move_group = MoveGroupInterface("arm", "base_link")
+        # self.move_group.setPlanningTime(240)
+        # self.move_group.setPlannerId("RRTConnectkConfigDefault")
+        # self.pickplace.allowed_planning_time = 240
+        # self.pickplace.planner_id = "RRTConnectkConfigDefault"
 
         find_topic = "basic_grasping_perception/find_objects"
         rospy.loginfo("Waiting for %s..." % find_topic)
@@ -117,16 +121,41 @@ class GraspingClient(object):
         objects = list()
         idx = -1
         for obj in find_result.objects:
-            print("%s block is added" % obj.object.properties[0].name)
 
+            print(obj.object.primitives[0].dimensions)
             idx += 1
-            obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
-            self.scene.addSolidPrimitive(obj.object.name,
-                                         obj.object.primitives[0],
-                                         obj.object.primitive_poses[0],
-                                         use_service=False)
-            if obj.object.primitive_poses[0].position.x < 0.85:
-                objects.append([obj, obj.object.primitive_poses[0].position.z])
+            if (obj.object.primitives[0].dimensions[0] > 0.07 or 
+                obj.object.primitives[0].dimensions[1] > 0.07 or
+                obj.object.primitives[0].dimensions[2] > 0.07):
+                idx-=1
+                print("%s basket is added" % obj.object.properties[0].name)
+                obj.object.name = "basket_%s"% obj.object.properties[0].name
+                obj.object.primitives[0].dimensions = [0.35, 0.2, 0.2]
+                if obj.object.properties[0].name.find("red"):
+                    obj.object.primitive_poses[0].position.x = 0.8
+                    obj.object.primitive_poses[0].position.y = -0.35
+                    obj.object.primitive_poses[0].position.z = 0.8
+                else:
+                    obj.object.primitive_poses[0].position.x = 0.8
+                    obj.object.primitive_poses[0].position.y = 0.3
+                    obj.object.primitive_poses[0].position.z = 0.8                   
+                self.scene.addSolidPrimitive(obj.object.name,
+                                            obj.object.primitives[0],
+                                            obj.object.primitive_poses[0],
+                                            use_service=False)
+                continue
+            else:
+                print("%s block is added" % obj.object.properties[0].name)
+                
+                obj.object.name = "%s%d"%(obj.object.properties[0].name, idx)
+                self.scene.addSolidPrimitive(obj.object.name,
+                                            obj.object.primitives[0],
+                                            obj.object.primitive_poses[0],
+                                            use_service=False)
+                if obj.object.primitive_poses[0].position.x < 0.85:
+                    objects.append([obj, obj.object.primitive_poses[0].position.z])
+
+
 
         for obj in find_result.support_surfaces:
             # extend surface to floor, and make wider since we have narrow field of view
@@ -203,21 +232,27 @@ class GraspingClient(object):
         
 
         # copy the posture, approach and retreat from the grasp used
-        l.post_place_posture = self.pick_result.grasp.pre_grasp_posture
-        l.pre_place_approach = self.pick_result.grasp.pre_grasp_approach
-        l.post_place_retreat = self.pick_result.grasp.post_grasp_retreat
-        places.append(copy.deepcopy(l))
-        # create another several places, rotate each by 360/m degrees in yaw direction
-        m = 16 # number of possible place poses
-        pi = 3.141592653589
-        for i in range(0, m-1):
-            l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 2 * pi / m)
-            places.append(copy.deepcopy(l))
+        # l.post_place_posture = self.pick_result.grasp.pre_grasp_posture
+        # l.pre_place_approach = self.pick_result.grasp.pre_grasp_approach
+        # l.post_place_retreat = self.pick_result.grasp.post_grasp_retreat
+        # places.append(copy.deepcopy(l))
+        # # create another several places, rotate each by 360/m degrees in yaw direction
+        # m = 16 # number of possible place poses
+        # pi = 3.141592653589
+        # for i in range(0, m-1):
+        #     l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 2 * pi / m * i)
+        #     places.append(copy.deepcopy(l))
 
         success, place_result = self.pickplace.place_with_retry(block.name,
                                                                 places,
+                                                                retries= 20,
                                                                 scene=self.scene)
         return success
+    
+    # def place2(self, block, pose_stamped)
+    #     l = PlaceLocation()
+    #     l.place_pose.pose = pose_stamped.pose
+    #     l.place_pose.header.frame_id = pose_stamped.header.frame_id
 
     def tuck(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
@@ -290,17 +325,17 @@ if __name__ == "__main__":
                 grasping_client.stow()
                 head_action.look_at(1.2, 0.0, 0.0, "base_link")
                 continue
-
-            # Pick the block
-            if grasping_client.pick(cube, grasps):
-                cube_in_grapper = True
-                break
-            rospy.logwarn("Grasping failed.")
-            grasping_client.stow()
-            if fail_ct > 15:
-                fail_ct = 0
-                break
-            fail_ct += 1
+            if (cube.name.find("basket")<0):
+                # Pick the block
+                if grasping_client.pick(cube, grasps):
+                    cube_in_grapper = True
+                    break
+                rospy.logwarn("Grasping failed.")
+                grasping_client.stow()
+                if fail_ct > 15:
+                    fail_ct = 0
+                    break
+                fail_ct += 1
 
         # Tuck the arm
         #grasping_client.tuck()
@@ -318,22 +353,26 @@ if __name__ == "__main__":
         #rospy.loginfo("Raising torso...")
         #torso_action.move_to([0.4, ])
 
-        print("placing...", cube.name)
+        rospy.loginfo("wait for 10 seconds for placing")
+        rospy.Duration(10)
+        rospy.loginfo("placing... %s" % cube.name)
+
         # Place the block
         while not rospy.is_shutdown() and cube_in_grapper:
             rospy.loginfo("Placing object...")
             pose = PoseStamped()
-            pose.pose = cube.primitive_poses[0]
-            if (cube.name.find("red") > 0):
+            pose.pose.orientation = cube.primitive_poses[0].orientation
+
+            if ((cube.name).find("red") > 0):
                 print("find red")
-                pose.pose.position.y = -0.5
                 pose.pose.position.x = 0.7
-                pose.pose.position.z = 0.7
-            elif (cube.name.find("blue") > 0):
-                print("find blue")
-                pose.pose.position.y = 0.5
+                pose.pose.position.y = -0.35
+                pose.pose.position.z = 1.1
+            else:
+                print("find blue or green")
                 pose.pose.position.x = 0.7
-                pose.pose.position.z = 0.7
+                pose.pose.position.y = 0.3
+                pose.pose.position.z = 1.1
 
             pose.header.frame_id = cube.header.frame_id
             if grasping_client.place(cube, pose):
