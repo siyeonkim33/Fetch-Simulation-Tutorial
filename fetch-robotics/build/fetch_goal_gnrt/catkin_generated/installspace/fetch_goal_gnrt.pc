@@ -1,8 +1,0 @@
-prefix=/home/glab/Desktop/fetch-robotics/install
-
-Name: fetch_goal_gnrt
-Description: Description of fetch_goal_gnrt
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

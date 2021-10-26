@@ -1,2 +1,0 @@
-fetch_goal_gnrt
--DCATKIN_DEVEL_PREFIX=/home/siyeon/Desktop/fetch-robotics/devel -DCMAKE_INSTALL_PREFIX=/home/siyeon/Desktop/fetch-robotics/install -G Unix Makefiles

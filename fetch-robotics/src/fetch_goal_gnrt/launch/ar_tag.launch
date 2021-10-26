@@ -14,10 +14,16 @@
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="headless" value="$(arg headless)"/>
-    <arg name="world_name" value="$(find fetch_goal_gnrt)/worlds/init_red.sdf"/>
+    <arg name="world_name" value="$(find fetch_goal_gnrt)/worlds/ar_test.sdf"/>
   </include>
 
   <!-- Oh, you wanted a robot? -->
   <include file="$(find fetch_gazebo)/launch/include/$(arg robot)_pp.launch.xml" />
-  
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <!-- <include file="$(find fetch_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include> -->
+
 </launch>

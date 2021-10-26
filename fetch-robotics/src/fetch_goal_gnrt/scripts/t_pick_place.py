@@ -120,33 +120,35 @@ class GraspingClient(object):
     def getGraspableObject(self, goal_obj_x, goal_obj_y):
         graspable = None
         for obj in self.objects:
-            # need grasps
-            if len(obj.grasps) < 1:
-                continue
-            # check size
-            if obj.object.primitives[0].dimensions[0] < 0.03 or \
-               obj.object.primitives[0].dimensions[0] > 0.25 or \
-               obj.object.primitives[0].dimensions[0] < 0.03 or \
-               obj.object.primitives[0].dimensions[0] > 0.25 or \
-               obj.object.primitives[0].dimensions[0] < 0.03 or \
-               obj.object.primitives[0].dimensions[0] > 0.25:
-                continue
-            # has to be on table
-            if obj.object.primitive_poses[0].position.z < 0.4:
-                continue
-            if obj.object.primitive_poses[0].position.x < 0.3:
-                continue
-            # get goal object
-            if ( abs(obj.object.primitive_poses[0].position.x - goal_obj_x) > 0.03):
-                continue
-            if ( abs(obj.object.primitive_poses[0].position.y - goal_obj_y) > 0.03):
-                continue
+            # # need grasps
+            # if len(obj.grasps) < 1:
+            #     continue
+            # # check size
+            # if obj.object.primitives[0].dimensions[0] < 0.03 or \
+            #    obj.object.primitives[0].dimensions[0] > 0.25 or \
+            #    obj.object.primitives[0].dimensions[0] < 0.03 or \
+            #    obj.object.primitives[0].dimensions[0] > 0.25 or \
+            #    obj.object.primitives[0].dimensions[0] < 0.03 or \
+            #    obj.object.primitives[0].dimensions[0] > 0.25:
+            #     continue
+            # # has to be on table
+            # if obj.object.primitive_poses[0].position.z < 0.4:
+            #     continue
+            # if obj.object.primitive_poses[0].position.x < 0.3:
+            #     continue
+            # # get goal object
+            # if ( abs(obj.object.primitive_poses[0].position.x - goal_obj_x) > 0.03):
+            #     continue
+            # if ( abs(obj.object.primitive_poses[0].position.y - goal_obj_y) > 0.03):
+            #     continue
 
-            print("**************************************Object Name: ", obj.object.name)
-            print("Object Pose: ", obj.object.primitive_poses[0], obj.object.primitives[0])
-            return obj.object, obj.grasps
+            # print("**************************************Object Name: ", obj.object.name)
+            # print("Object Pose: ", obj.object.primitive_poses[0], obj.object.primitives[0])
+            # return obj.object, obj.grasps
+            retrun obj.object
         # nothing detected
-        return None, None
+        # return None, None
+        return None
 
     def getSupportSurface(self, name):
         for surface in self.support_surfaces:
@@ -157,10 +159,95 @@ class GraspingClient(object):
     def getPlaceLocation(self):
         pass
 
-    def pick(self, block, grasps):
-        success, pick_result = self.pickplace.pick_with_retry(block.name, grasps, support_name=block.support_surface, scene=self.scene)
-        self.pick_result = pick_result
-        return success
+    # def pick(self, block, grasps):
+    #     ## (self, name, grasps, retries=5, scene=None,)
+    #     success, pick_result = self.pickplace.pick_with_retry(block.name, grasps, support_name=block.support_surface, scene=self.scene)
+    #     self.pick_result = pick_result
+    #     return success
+
+    def pick(self, block, close_gripper_to=0.02, retry=1, tolerance=0.01, x_diff_pick=-0.01, z_diff_pick=0.1, x_diff_grasp=-0.01, z_diff_grasp=0.01):
+        self.gripper_client.fully_open_gripper() ## open gripper
+
+        #===== self.angle ====#
+        angle_tmp = self.angle
+        input_retry = retry
+        success = False
+
+        while angle_tmp <= self.angle_max and not success:
+            radian = (angle_tmp / 2.0) * (pi / 180.0)    ## convert degree to radian
+            rot_orientation = Quaternion(0.0, sin(radian), 0.0, cos(radian))
+
+            ## orientation & quarternion
+            obj_ori = obj.primitive_poses[0].orientation
+            obj_quat = [obj_ori.x, obj_ori.y, obj_ori.z, obj_ori.w]
+
+            ## rotations (roll, pitch, yaw)
+            roll, pitch, yaw = transformations.euler_from_quaternion(obj_quat)
+
+            ### extract the yaw orientation from the object 
+            yaw_quat = transformations.quaternion_from_euler(0.0, 0.0, yaw)
+            yaw_orientation = Quaternion(yaw_quat[0], yaw_quat[1], yaw_quat[2], yaw_quat[3])
+
+            # multiply the previous pitch orientation that the gripper is goring to rotate
+            ## The new orientation will be the orientation of the gripper link
+            gripper_orientation = self.quaternion_multiply(yaw_orientation, rot_orientation)
+
+
+            # The position of the gripper link will be the position of the cube \\
+            # plus x_diff_pick in gripper link x axis direction and plus z_diff_pick in the gripper link z axis direction
+
+            # The reason to do this is that if the we plan the gripper to the exact object position, the grippers might hit the object due to the observation errors.
+            first_poseStamped = self.make_poseStamped("base_link", obj.primitive_poses[0], gripper_orientation)
+            first_poseStamped.pose.position.x += x_diff_pick     
+            first_poseStamped.pose.position.z += z_diff_pick
+
+            while retry > 0:
+                move_pose_result = self.move_group.moveToPose(first_poseStamped, "gripper_link", tolerance=tolerance, PLAN_ONLY=True)
+                rospy.sleep(1.0)
+                if move_pose_result.error_code.val == MoveItErrorCodes.SUCCESS:
+                    success = True
+                    break
+                else:
+                    if move_pose_result.error_code.val == MoveItErrorCodes.NO_IK_SOLUTION:
+                        rospy.loginfo("no valid IK found")               
+                    rospy.loginfo(move_pose_result.error_code.val)
+                retry -= 1
+            angle_tmp += self.angle_step
+            retry = input_retry
+        if retry == 0:
+            return False
+
+        success = False
+        curr_retry = retry
+        while angle_tmp  <= 90 and not success:
+            radian = (angle_tmp  / 2) * (pi / 180)
+            rot_orientation = Quaternion(0.0, sin(radian), 0.0, cos(radian))
+
+            gripper_orientation = self.quaternion_multiply(yaw_orientation, rot_orientation)
+            gripper_pose_stamped = self.make_poseStamped("base_link", obj.primitive_poses[0], gripper_orientation)
+            gripper_pose_stamped.pose.position.z += z_diff_grasp
+            gripper_pose_stamped.pose.position.x += x_diff_grasp
+
+            while curr_retry > 0:
+                move_pose_result = self.move_group.moveToPose(gripper_pose_stamped, "gripper_link", tolerance=tolerance)
+                rospy.sleep(1.0)
+                if move_pose_result.error_code.val == MoveItErrorCodes.SUCCESS:
+                    success = True
+                    break
+                else:
+                    if move_pose_result.error_code.val == MoveItErrorCodes.NO_IK_SOLUTION:
+                        rospy.loginfo("no valid IK found")      
+                    rospy.loginfo(move_pose_result.error_code.val)
+                curr_retry -= 1
+            angle_tmp  += self.angle_step
+            curr_retry = retry
+            rospy.loginfo("closing the gripper")
+            self.makeAttach(obj)
+            self.gripper_client.close_gripper_to(close_gripper_to)
+        if curr_retry == 0:
+            return False
+        rospy.loginfo("done picking")
+        return True
 
     def place(self, block, pose_stamped):
         places = list()
@@ -186,6 +273,7 @@ class GraspingClient(object):
         success, place_result = self.pickplace.place_with_retry(block.name, places, scene=self.scene)
         return success
 
+    ## tuck pose
     def tuck(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -195,6 +283,7 @@ class GraspingClient(object):
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
 
+    # stow pose
     def stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -205,6 +294,7 @@ class GraspingClient(object):
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
 
+    # intermediate stow pose
     def intermediate_stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -239,7 +329,7 @@ def delete_gazebo_model(models):
 #===================================================================================
 if __name__ == "__main__":
     rospack = rospkg.RosPack()
-    pack_path = rospack.get_path('fetch_tamp')
+    pack_path = rospack.get_path('fetch_goal_gnrt')
     rospy.init_node("demo") # Create a node
 
     # Make sure sim time is working
@@ -252,30 +342,33 @@ if __name__ == "__main__":
     grasping_client.stow() # Go to a default pose
     cube_in_grapper = False
 
-    init_pose = [Pose(position=Point(x=0.8, y=-0.3, z=0.5)),
-                Pose(position=Point(x=0.8, y=-0.2,  z=0.5)),
-                Pose(position=Point(x=0.8, y=-0.1,  z=0.5)),
-                Pose(position=Point(x=0.8, y=-0,    z=0.5)),
-                Pose(position=Point(x=0.8, y=0.1,   z=0.5)),
-                Pose(position=Point(x=0.8, y=0.2,   z=0.5)),
-                Pose(position=Point(x=0.8, y=0.3,   z=0.5))]
+    init_pose = [
+                # Pose(position=Point(x=0.8, y=-0.3, z=0.5)),
+                # Pose(position=Point(x=0.8, y=-0.2,  z=0.5)),
+                # Pose(position=Point(x=0.8, y=-0.1,  z=0.5)),
+                # Pose(position=Point(x=0.8, y=-0,    z=0.5)),
+                # Pose(position=Point(x=0.8, y=0.1,   z=0.5)),
+                # Pose(position=Point(x=0.8, y=0.2,   z=0.5)),
+                Pose(position=Point(x=0.8, y=0,   z=0.5))]
 
     # object goal info tuble: (index, Pose)
     obj0_goal = (0, Pose(position=Point(x=0.6, y= 0.1,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj1_goal = (1, Pose(position=Point(x=0.6, y= 0.3,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj2_goal = (2, Pose(position=Point(x=0.6, y= -0.2, z= 0.5),  orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj3_goal = (3, Pose(position=Point(x=0.6, y= -0.1, z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj4_goal = (4, Pose(position=Point(x=0.6, y= 0,    z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj5_goal = (5, Pose(position=Point(x=0.6, y= 0.2,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj6_goal = (6, Pose(position=Point(x=0.6, y= -0.3, z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj1_goal = (1, Pose(position=Point(x=0.6, y= 0.3,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj2_goal = (2, Pose(position=Point(x=0.6, y= -0.2, z= 0.5),  orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj3_goal = (3, Pose(position=Point(x=0.6, y= -0.1, z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj4_goal = (4, Pose(position=Point(x=0.6, y= 0,    z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj5_goal = (5, Pose(position=Point(x=0.6, y= 0.2,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
+    # obj6_goal = (6, Pose(position=Point(x=0.6, y= -0.3, z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
 
-    obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal, obj4_goal, obj5_goal, obj6_goal]
+    obj_goal = [obj0_goal]
+    # obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal, obj4_goal, obj5_goal, obj6_goal]
+
 
     sorted_obj_goal = sorted(obj_goal, key=lambda obj: (obj[1].position.y, -obj[1].position.x))
 
-    object_no = 7
+    object_no = 1
     for b in range(0, object_no): #generate block objects
-        object_path = os.path.join(pack_path, 'models', 'block', 'm'+str(b)+'.urdf')
+        object_path = os.path.join(pack_path, 'models', 'cubes', 'red_cube.sdf')
         object_name = 'obj'+str(b)
         object_pose = init_pose[b]
         spawn_gazebo_model(object_path, object_name, object_pose)
@@ -296,7 +389,7 @@ if __name__ == "__main__":
             print("*******goal y index: ", sorted_obj_goal[obj_i][0])
             print("*******goal object y: ", init_pose[sorted_obj_goal[obj_i][0]].position.y)
 
-            cube, grasps = grasping_client.getGraspableObject(init_pose[sorted_obj_goal[obj_i][0]].position.x, init_pose[sorted_obj_goal[obj_i][0]].position.y)
+            # cube, grasps = grasping_client.getGraspableObject(init_pose[sorted_obj_goal[obj_i][0]].position.x, init_pose[sorted_obj_goal[obj_i][0]].position.y)
 
             if cube == None:
                 rospy.logwarn("Perception failed.")
@@ -306,7 +399,7 @@ if __name__ == "__main__":
                 continue
 
             # Pick the block
-            if grasping_client.pick(cube, grasps):
+            if grasping_client.pick(cube):
                 cube_in_grapper = True
                 break
             print("Pick Success")
