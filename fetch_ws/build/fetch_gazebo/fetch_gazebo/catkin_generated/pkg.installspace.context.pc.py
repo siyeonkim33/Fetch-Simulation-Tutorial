@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "${prefix}/include".split(';') if "${prefix}/i
 PROJECT_CATKIN_DEPENDS = "control_toolbox;gazebo_plugins;gazebo_ros;robot_controllers;robot_controllers_interface".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "-lfetch_gazebo_plugin".split(';') if "-lfetch_gazebo_plugin" != "" else []
 PROJECT_NAME = "fetch_gazebo"
-PROJECT_SPACE_DIR = "/home/siyeon/Desktop/fetch_ws/install"
+PROJECT_SPACE_DIR = "/home/glab/Desktop/fetch_ws/install"
 PROJECT_VERSION = "0.9.2"

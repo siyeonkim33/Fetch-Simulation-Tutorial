@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/basic_grasping_perception.dir/src/basic_grasping_perception.cpp.o"
-  "/home/siyeon/Desktop/fetch_ws/devel/lib/simple_grasping/basic_grasping_perception.pdb"
-  "/home/siyeon/Desktop/fetch_ws/devel/lib/simple_grasping/basic_grasping_perception"
+  "/home/glab/Desktop/fetch_ws/devel/lib/simple_grasping/basic_grasping_perception.pdb"
+  "/home/glab/Desktop/fetch_ws/devel/lib/simple_grasping/basic_grasping_perception"
 )
 
 # Per-language clean rules from dependency scanning.

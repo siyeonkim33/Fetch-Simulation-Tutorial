@@ -1,4 +1,4 @@
-prefix=/home/siyeon/Desktop/fetch_ws/install
+prefix=/home/glab/Desktop/fetch_ws/install
 
 Name: fetch_teleop
 Description: Description of fetch_teleop

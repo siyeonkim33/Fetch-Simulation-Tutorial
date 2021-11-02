@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/src/grasp_planner_node.cpp
+/home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/src/grasp_planner_node.cpp
 ros/ros.h
 -
 actionlib/server/simple_action_server.h

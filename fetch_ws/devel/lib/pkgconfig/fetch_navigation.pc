@@ -1,4 +1,4 @@
-prefix=/home/siyeon/Desktop/fetch_ws/devel
+prefix=/home/glab/Desktop/fetch_ws/devel
 
 Name: fetch_navigation
 Description: Description of fetch_navigation

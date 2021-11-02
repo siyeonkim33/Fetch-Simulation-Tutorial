@@ -324,6 +324,6 @@ if __name__ == "__main__":
 
     print("*******Waiting for look at the table")
     time.sleep(2.0)
-    head_action.look_at(1.5, 0.0, -0.5, "base_link")
+    head_action.look_at(1.5, 0.0, -1.3, "base_link")
     rospy.loginfo("Finished")
     #torso_action.move_to([0.0, ])

@@ -32,6 +32,9 @@
 import copy
 import actionlib
 import rospy
+import sys, time
+import pcl
+import pcl_helper
 
 from math import sin, cos
 from moveit_python import (MoveGroupInterface,
@@ -46,7 +49,8 @@ from geometry_msgs.msg import PoseStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-"class 1: MoveBaseClient"
+
+
 # Move base using navigation stack
 class MoveBaseClient(object):
 
@@ -68,7 +72,6 @@ class MoveBaseClient(object):
         self.client.send_goal(move_goal)
         self.client.wait_for_result()
 
-"class2: FollowTrajectoryClient"
 # Send a trajectory to controller
 class FollowTrajectoryClient(object):
 
@@ -96,18 +99,14 @@ class FollowTrajectoryClient(object):
         self.client.send_goal(follow_goal)
         self.client.wait_for_result()
 
-"class3: PointHeadClient"
 # Point the head using controller
 class PointHeadClient(object):
 
-    # initialize a head_controller
     def __init__(self):
-        # topic & message type -> CLIENT에게 전달
         self.client = actionlib.SimpleActionClient("head_controller/point_head", PointHeadAction)
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
 
-    # Head camera looks at a specific location
     def look_at(self, x, y, z, frame, duration=1.0):
         goal = PointHeadGoal()
         goal.target.header.stamp = rospy.Time.now()
@@ -119,7 +118,7 @@ class PointHeadClient(object):
         self.client.send_goal(goal)
         self.client.wait_for_result()
 
-"Class4: GraspingClient"
+    
 # Tools for grasping
 class GraspingClient(object):
 
@@ -137,9 +136,7 @@ class GraspingClient(object):
         # find objects
         goal = FindGraspableObjectsGoal()
         goal.plan_grasps = True
-        # Send message "goal"=FindGraspingObjectsAction to Client with "basic_grasping_perception/find_objects" & FindGraspingObjectsAction
         self.find_client.send_goal(goal)
-        # waiting for the results from client
         self.find_client.wait_for_result(rospy.Duration(5.0))
         find_result = self.find_client.get_result()
 
@@ -154,20 +151,21 @@ class GraspingClient(object):
         objects = list()
         idx = -1
         for obj in find_result.objects:
-            idx += 1
-            obj.object.name = "object%d"%idx
-            self.scene.addSolidPrimitive(obj.object.name,
-                                         obj.object.primitives[0],
-                                         obj.object.primitive_poses[0],
-                                         use_service=False)
             if obj.object.primitive_poses[0].position.x < 0.85:
+                idx += 1
+                obj.object.name = "object%d"%idx
+                self.scene.addSolidPrimitive(obj.object.name,
+                                            obj.object.primitives[0],
+                                            obj.object.primitive_poses[0],
+                                            use_service=False)
+                # if obj.object.primitive_poses[0].position.x < 0.85:
                 objects.append([obj, obj.object.primitive_poses[0].position.z])
 
         for obj in find_result.support_surfaces:
             # extend surface to floor, and make wider since we have narrow field of view
             height = obj.primitive_poses[0].position.z
             obj.primitives[0].dimensions = [obj.primitives[0].dimensions[0],
-                                            1.5,  # wider
+                                            2,  # wider
                                             obj.primitives[0].dimensions[2] + height]
             obj.primitive_poses[0].position.z += -height/2.0
 
@@ -186,8 +184,6 @@ class GraspingClient(object):
         # store graspable objects by Z
         objects.sort(key=lambda object: object[1])
         objects.reverse()
-
-        " store objects into self.objects"
         self.objects = [object[0] for object in objects]
         #for object in objects:
         #    print(object[0].object.name, object[1])
@@ -200,6 +196,8 @@ class GraspingClient(object):
             if len(obj.grasps) < 1:
                 continue
             # check size
+            print("############# check object size #############")
+            print(obj.object.primitives[0].dimensions[0])
             if obj.object.primitives[0].dimensions[0] < 0.03 or \
                obj.object.primitives[0].dimensions[0] > 0.25 or \
                obj.object.primitives[0].dimensions[0] < 0.03 or \
@@ -211,6 +209,11 @@ class GraspingClient(object):
             if obj.object.primitive_poses[0].position.z < 0.5:
                 continue
             print obj.object.primitive_poses[0], obj.object.primitives[0]
+            print("grasp pose: (", obj.grasps[0].grasp_pose.pose.position.x, ", ", \
+                                    obj.grasps[0].grasp_pose.pose.position.y,", ", \
+                                    obj.grasps[0].grasp_pose.pose.position.z, ")")
+            # obj.grasps[0].grasp_pose.pose.position.z += 0.25
+
             return obj.object, obj.grasps
         # nothing detected
         return None, None
@@ -224,15 +227,21 @@ class GraspingClient(object):
     def getPlaceLocation(self):
         pass
 
-    def pick(self, block, grasps):
+    def pick(self, block, grasps, plan_only=False):
+        print("grasp pose: (", grasps[0].grasp_pose.pose.position.x, ", ", \
+                               grasps[0].grasp_pose.pose.position.y,", ", \
+                               grasps[0].grasp_pose.pose.position.z, ")")
+
+        # self.openGripper(grasps[0].pre_grasp_posture)
+        # self.closedGripper(grasps[0].grasp_posture)
         success, pick_result = self.pickplace.pick_with_retry(block.name,
-                                                              grasps,
-                                                              support_name=block.support_surface,
-                                                              scene=self.scene)
+                                                        grasps,
+                                                        support_name=block.support_surface,
+                                                        scene=self.scene)
         self.pick_result = pick_result
         return success
 
-    def place(self, block, pose_stamped):
+    def place(self, block, pose_stamped, plan_only=False):
         places = list()
         l = PlaceLocation()
         l.place_pose.pose = pose_stamped.pose
@@ -253,11 +262,16 @@ class GraspingClient(object):
         success, place_result = self.pickplace.place_with_retry(block.name,
                                                                 places,
                                                                 scene=self.scene)
+        print("**************************")
+        for obj in self.objects:
+            print(obj.object.name)
+            print("block", block.name)
+        print("**************************")
+
+        # if success:
+        #     self.objects.object.remove(block)
         return success
 
-
-###############################################NEVER MIND#############################################
-    #tuck pose
     def tuck(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -266,7 +280,7 @@ class GraspingClient(object):
             result = self.move_group.moveToJointPosition(joints, pose, 0.02)
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
-    # stow pose
+
     def stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -275,7 +289,7 @@ class GraspingClient(object):
             result = self.move_group.moveToJointPosition(joints, pose, 0.02)
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
-    # intermediate stow pose
+
     def intermediate_stow(self):
         joints = ["shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -284,7 +298,14 @@ class GraspingClient(object):
             result = self.move_group.moveToJointPosition(joints, pose, 0.02)
             if result.error_code.val == MoveItErrorCodes.SUCCESS:
                 return
-#####################################################################################################
+
+def callback(input_ros_msg):
+    cloud = pcl_helper.ros_to_pcl(input_ros_msg)
+
+    print(cloud)
+
+    cloud_new = pcl_helper.pcl_to_ros(cloud)
+
 if __name__ == "__main__":
     # Create a node
     rospy.init_node("demo")
@@ -312,14 +333,17 @@ if __name__ == "__main__":
     # Point the head at the cube we want to pick
     # head_action.look_at(3.7, 3.18, 0.0, "map")
     cube_in_grapper = False
-    grasping_client.stow()
+
+    rospy.Subscriber('/head_camera/depth_registered/points', PointCloud2, callback)
 
     while not rospy.is_shutdown():
-        head_action.look_at(1.2, 0.0, 0.0, "base_link")
+        # head_action.look_at(1.2, 0.0, 0.0, "base_link")
 
         # Get block to pick
         fail_ct = 0
+
         while not rospy.is_shutdown() and not cube_in_grapper:
+
             rospy.loginfo("Picking object...")
             grasping_client.updateScene()
             cube, grasps = grasping_client.getGraspableObject()
@@ -327,7 +351,7 @@ if __name__ == "__main__":
                 rospy.logwarn("Perception failed.")
                 # grasping_client.intermediate_stow()
                 grasping_client.stow()
-                head_action.look_at(1.2, 0.0, 0.0, "base_link")
+                # head_action.look_at(1.2, 0.0, 0.0, "base_link")
                 continue
 
             # Pick the block

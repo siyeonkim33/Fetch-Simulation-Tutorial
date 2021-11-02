@@ -324,25 +324,10 @@ if __name__ == "__main__":
     # scene.addBox("table", 0.9, 1.6, 0.56, 0.88, 0, 0.28)
 
 
-
-    init_pose = [Pose(position=Point(x=0.8, y=-0.3, z=0.5)),
-                Pose(position=Point(x=0.8, y=-0.2,  z=0.5)),
-                Pose(position=Point(x=0.8, y=-0.1,  z=0.5)),
-                Pose(position=Point(x=0.8, y=-0,    z=0.5)),
-                Pose(position=Point(x=0.8, y=0.1,   z=0.5))]
-
-    # object goal info tuble: (index, Pose)
-    obj0_goal = (0, Pose(position=Point(x=0.6, y= 0.1,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj1_goal = (1, Pose(position=Point(x=0.6, y= 0.3,  z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj2_goal = (2, Pose(position=Point(x=0.6, y= -0.2, z= 0.5),  orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj3_goal = (3, Pose(position=Point(x=0.6, y= -0.1, z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-    obj4_goal = (4, Pose(position=Point(x=0.6, y= 0,    z= 0.5), orientation=Quaternion(x=0, y=0, z=0, w=1)))
-
-
-    #init_pose = [Pose(position=Point(x=0.8, y=0,   z=0.67)),
-    #            Pose(position=Point(x=0.8, y=-0.2,  z=0.67)),
-    #            Pose(position=Point(x=0.8, y=-0.1,  z=0.67)),
-    #            Pose(position=Point(x=0.55, y=-0.1, z=0.67))]
+    init_pose = [Pose(position=Point(x=0.8, y=0,   z=0.67)),
+                Pose(position=Point(x=0.8, y=-0.2,  z=0.67)),
+                Pose(position=Point(x=0.8, y=-0.1,  z=0.67)),
+                Pose(position=Point(x=0.55, y=-0.1, z=0.67))]
                 
                 # Pose(position=Point(x=0.8, y=-0,    z=0.5)),
                 # Pose(position=Point(x=0.8, y=0.1,   z=0.5)),
@@ -350,12 +335,12 @@ if __name__ == "__main__":
                 
 
     # object goal info tuble: (index, Pose)
-    #obj0_goal = (0, Pose(position=Point(x=0.6, y= -0.3,  z= 0.67)))
-    #obj1_goal = (1, Pose(position=Point(x=0.5, y= 0.3,  z= 0.67)))
-    #obj2_goal = (2, Pose(position=Point(x=0.7, y= 0.3, z= 0.67)))
-    #obj3_goal = (3, Pose(position=Point(x=0.6, y= 0.4, z= 0.67)))
+    obj0_goal = (0, Pose(position=Point(x=0.6, y= -0.3,  z= 0.67)))
+    obj1_goal = (1, Pose(position=Point(x=0.5, y= 0.3,  z= 0.67)))
+    obj2_goal = (2, Pose(position=Point(x=0.7, y= 0.3, z= 0.67)))
+    obj3_goal = (3, Pose(position=Point(x=0.6, y= 0.4, z= 0.67)))
 
-    obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal, obj4_goal]
+    obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal]
     # obj_goal = [obj0_goal, obj1_goal, obj2_goal, obj3_goal, obj4_goal, obj5_goal, obj6_goal]
 
     # sorted_init = sorted(range(len(init_pose)), key=lambda ind: (init_pose[ind].position.y, init_pose[ind].position.x))
@@ -368,8 +353,7 @@ if __name__ == "__main__":
         sorted_obj_goal.append(obj_goal[i])
         print(sorted_obj_goal[i], sorted_init_pose[i])
 
-    #models = ['cylinder','cubes/red_cube', 'cubes/blue_cube', 'cylinder']
-    models = ['sugarbox', 'sugarbox', 'gelatin', 'book_orange','gelatin']
+    models = ['cylinder','cubes/red_cube', 'cubes/blue_cube', 'cylinder']
 
     for b in range(0, len(models)): #generate block objects
         object_path = os.path.join(pack_path, 'models', models[b], 'model.sdf')

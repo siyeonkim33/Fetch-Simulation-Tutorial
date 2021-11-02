@@ -1,8 +1,0 @@
-prefix=/home/glab/Desktop/fetch_test/devel
-
-Name: tf2_bullet
-Description: Description of tf2_bullet
-Version: 0.6.5
-Cflags: -I/home/glab/Desktop/fetch_test/src/geometry2/tf2_bullet/include -I/usr/include/bullet
-Libs: -L${prefix}/lib 
-Requires: 

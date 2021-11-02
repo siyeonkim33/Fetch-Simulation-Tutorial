@@ -58,7 +58,7 @@ ObjectSupportSegmentation::ObjectSupportSegmentation(
   double leaf_size, llimit, ulimit;
   std::string field;
   nh.param<double>("voxel_leaf_size", leaf_size, 0.005);
-  nh.param<double>("voxel_limit_min", llimit, 0.0);
+  nh.param<double>("voxel_limit_min", llimit, 0.5);
   nh.param<double>("voxel_limit_max", ulimit, 1.8);
   nh.param<std::string>("voxel_field_name", field, "z");
   voxel_grid_.setLeafSize(leaf_size, leaf_size, leaf_size);

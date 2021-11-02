@@ -1,8 +1,0 @@
-prefix=/home/siyeon/Desktop/catkin_ws/install
-
-Name: cube_test
-Description: Description of cube_test
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

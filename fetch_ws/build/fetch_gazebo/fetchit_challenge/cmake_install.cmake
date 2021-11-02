@@ -1,8 +1,8 @@
-# Install script for directory: /home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge
+# Install script for directory: /home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/siyeon/Desktop/fetch_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/glab/Desktop/fetch_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -38,98 +38,98 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/action" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/action/SchunkMachine.action")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/action" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/action/SchunkMachine.action")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/msg" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineAction.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionGoal.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionResult.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionFeedback.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineGoal.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineResult.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineFeedback.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineAction.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionGoal.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionResult.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineActionFeedback.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineGoal.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineResult.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SchunkMachineFeedback.msg"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/action" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/action/SickCamera.action")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/action" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/action/SickCamera.action")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/msg" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraAction.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionGoal.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionResult.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionFeedback.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraGoal.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraResult.msg"
-    "/home/siyeon/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraFeedback.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraAction.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionGoal.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionResult.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraActionFeedback.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraGoal.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraResult.msg"
+    "/home/glab/Desktop/fetch_ws/devel/share/fetchit_challenge/msg/SickCameraFeedback.msg"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/cmake" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/cmake" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/siyeon/Desktop/fetch_ws/devel/include/fetchit_challenge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/glab/Desktop/fetch_ws/devel/include/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/siyeon/Desktop/fetch_ws/devel/share/roseus/ros/fetchit_challenge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/glab/Desktop/fetch_ws/devel/share/roseus/ros/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/siyeon/Desktop/fetch_ws/devel/share/common-lisp/ros/fetchit_challenge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/glab/Desktop/fetch_ws/devel/share/common-lisp/ros/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/siyeon/Desktop/fetch_ws/devel/share/gennodejs/ros/fetchit_challenge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/glab/Desktop/fetch_ws/devel/share/gennodejs/ros/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/siyeon/Desktop/fetch_ws/devel/lib/python2.7/dist-packages/fetchit_challenge")
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/glab/Desktop/fetch_ws/devel/lib/python2.7/dist-packages/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/siyeon/Desktop/fetch_ws/devel/lib/python2.7/dist-packages/fetchit_challenge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/glab/Desktop/fetch_ws/devel/lib/python2.7/dist-packages/fetchit_challenge")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/cmake" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/cmake" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challenge-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge/cmake" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challengeConfig.cmake"
-    "/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challengeConfig-version.cmake"
+    "/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challengeConfig.cmake"
+    "/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/catkin_generated/installspace/fetchit_challengeConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/fetchit_challenge" TYPE PROGRAM FILES
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/scripts/spawn_assembly_delayed.sh"
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/scripts/spawn_assembly_delayed_simple.sh"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/scripts/spawn_assembly_delayed.sh"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/scripts/spawn_assembly_delayed_simple.sh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetchit_challenge" TYPE DIRECTORY FILES
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/config"
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/launch"
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/models"
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/urdf"
-    "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/worlds"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/config"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/launch"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/models"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/urdf"
+    "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/fetchit_challenge/worlds"
     )
 endif()
 

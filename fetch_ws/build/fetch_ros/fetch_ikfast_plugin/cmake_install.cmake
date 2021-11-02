@@ -1,8 +1,8 @@
-# Install script for directory: /home/siyeon/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin
+# Install script for directory: /home/glab/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/siyeon/Desktop/fetch_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/glab/Desktop/fetch_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -38,18 +38,18 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_plugin.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_plugin.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetch_ikfast_plugin/cmake" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_pluginConfig.cmake"
-    "/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_pluginConfig-version.cmake"
+    "/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_pluginConfig.cmake"
+    "/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/catkin_generated/installspace/fetch_ikfast_pluginConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetch_ikfast_plugin" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetch_ikfast_plugin" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -59,7 +59,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libfetch_arm_moveit_ikfast_plugin.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/siyeon/Desktop/fetch_ws/devel/lib/libfetch_arm_moveit_ikfast_plugin.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/glab/Desktop/fetch_ws/devel/lib/libfetch_arm_moveit_ikfast_plugin.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libfetch_arm_moveit_ikfast_plugin.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libfetch_arm_moveit_ikfast_plugin.so")
     file(RPATH_CHANGE
@@ -73,6 +73,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetch_ikfast_plugin" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin/fetch_arm_moveit_ikfast_plugin_description.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fetch_ikfast_plugin" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/src/fetch_ros/fetch_ikfast_plugin/fetch_arm_moveit_ikfast_plugin_description.xml")
 endif()
 

@@ -1,0 +1,8 @@
+prefix=/home/glab/Desktop/fetch_ws/install
+
+Name: pose_cnn
+Description: Description of pose_cnn
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

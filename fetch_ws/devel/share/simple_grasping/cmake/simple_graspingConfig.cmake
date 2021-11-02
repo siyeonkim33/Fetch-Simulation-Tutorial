@@ -67,14 +67,14 @@ set(simple_grasping_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(simple_grasping_SOURCE_PREFIX /home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping)
-  set(simple_grasping_DEVEL_PREFIX /home/siyeon/Desktop/fetch_ws/devel)
+  set(simple_grasping_SOURCE_PREFIX /home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping)
+  set(simple_grasping_DEVEL_PREFIX /home/glab/Desktop/fetch_ws/devel)
   set(simple_grasping_INSTALL_PREFIX "")
   set(simple_grasping_PREFIX ${simple_grasping_DEVEL_PREFIX})
 else()
   set(simple_grasping_SOURCE_PREFIX "")
   set(simple_grasping_DEVEL_PREFIX "")
-  set(simple_grasping_INSTALL_PREFIX /home/siyeon/Desktop/fetch_ws/install)
+  set(simple_grasping_INSTALL_PREFIX /home/glab/Desktop/fetch_ws/install)
   set(simple_grasping_PREFIX ${simple_grasping_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(simple_grasping_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/include " STREQUAL " ")
+if(NOT "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/include " STREQUAL " ")
   set(simple_grasping_INCLUDE_DIRS "")
-  set(_include_dirs "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/include")
+  set(_include_dirs "/home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://ros.org/wiki/simple_grasping " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/include "
         message(FATAL_ERROR "Project 'simple_grasping' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'simple_grasping' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'simple_grasping' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/${idir}'.  ${_report}")
     endif()
     _list_append_unique(simple_grasping_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/siyeon/Desktop/fetch_ws/devel/lib;/home/siyeon/Desktop/catkin_ws/devel/lib;/home/siyeon/Desktop/fetch_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/glab/Desktop/fetch_ws/devel/lib;/home/glab/Desktop/fetch_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

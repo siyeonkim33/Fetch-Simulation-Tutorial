@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/src/basic_grasping_perception.cpp
+/home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping/src/basic_grasping_perception.cpp
 ros/ros.h
 -
 actionlib/server/simple_action_server.h
@@ -908,6 +908,16 @@ boost/mpl/size.hpp
 boost/ref.hpp
 -
 boost/thread/mutex.hpp
+-
+type_traits
+-
+memory
+-
+pcl/pcl_config.h
+-
+pcl/memory.h
+-
+pcl/make_shared.h
 -
 
 /opt/ros/melodic/include/pcl_ros/transforms.h

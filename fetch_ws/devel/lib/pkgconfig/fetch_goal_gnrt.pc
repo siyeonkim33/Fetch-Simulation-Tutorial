@@ -1,4 +1,4 @@
-prefix=/home/siyeon/Desktop/fetch_ws/devel
+prefix=/home/glab/Desktop/fetch_ws/devel
 
 Name: fetch_goal_gnrt
 Description: Description of fetch_goal_gnrt

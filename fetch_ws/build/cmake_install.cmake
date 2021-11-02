@@ -1,8 +1,8 @@
-# Install script for directory: /home/siyeon/Desktop/fetch_ws/src
+# Install script for directory: /home/glab/Desktop/fetch_ws/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/siyeon/Desktop/fetch_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/glab/Desktop/fetch_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -49,114 +49,104 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/_setup_util.py")
+   "/home/glab/Desktop/fetch_ws/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE PROGRAM FILES "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE PROGRAM FILES "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/env.sh")
+   "/home/glab/Desktop/fetch_ws/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE PROGRAM FILES "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE PROGRAM FILES "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/env.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/setup.bash;/home/siyeon/Desktop/fetch_ws/install/local_setup.bash")
+   "/home/glab/Desktop/fetch_ws/install/setup.bash;/home/glab/Desktop/fetch_ws/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/setup.bash"
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.bash"
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE FILE FILES
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/setup.bash"
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/setup.sh;/home/siyeon/Desktop/fetch_ws/install/local_setup.sh")
+   "/home/glab/Desktop/fetch_ws/install/setup.sh;/home/glab/Desktop/fetch_ws/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/setup.sh"
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.sh"
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE FILE FILES
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/setup.sh"
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/setup.zsh;/home/siyeon/Desktop/fetch_ws/install/local_setup.zsh")
+   "/home/glab/Desktop/fetch_ws/install/setup.zsh;/home/glab/Desktop/fetch_ws/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE FILE FILES
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/setup.zsh"
-    "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.zsh"
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE FILE FILES
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/setup.zsh"
+    "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/siyeon/Desktop/fetch_ws/install/.rosinstall")
+   "/home/glab/Desktop/fetch_ws/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/siyeon/Desktop/fetch_ws/install" TYPE FILE FILES "/home/siyeon/Desktop/fetch_ws/build/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/home/glab/Desktop/fetch_ws/install" TYPE FILE FILES "/home/glab/Desktop/fetch_ws/build/catkin_generated/installspace/.rosinstall")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/siyeon/Desktop/fetch_ws/build/gtest/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_calibration/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_description/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetch_gazebo_demo/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_maps/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ros/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetch_simulation/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_goal_gnrt/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_navigation/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/general-message-pkgs/path_navigation_msgs/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/darknet_ros/darknet_ros_msgs/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetch_object_recog/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_teleop/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/darknet_ros/darknet_ros/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/general-message-pkgs/object_msgs/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/gazebo_test_tools/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/gazebo_version_helpers/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/gazebo_grasp_plugin/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/gazebo_world_plugin_loader/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/general-message-pkgs/object_msgs_tools/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/gazebo-pkgs/gazebo_state_plugins/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/simple_grasping/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_gazebo/fetch_gazebo/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_depth_layer/cmake_install.cmake")
-  include("/home/siyeon/Desktop/fetch_ws/build/fetch_ros/fetch_moveit_config/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/gtest/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_calibration/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_description/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_maps/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_ros/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetch_simulation/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_goal_gnrt/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/pose_cnn/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_navigation/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetchit_challenge/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetch_gazebo_demo/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_teleop/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_gazebo/simple_grasping/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_gazebo/fetch_gazebo/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_ikfast_plugin/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_depth_layer/cmake_install.cmake")
+  include("/home/glab/Desktop/fetch_ws/build/fetch_ros/fetch_moveit_config/cmake_install.cmake")
 
 endif()
 
@@ -168,5 +158,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/siyeon/Desktop/fetch_ws/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/glab/Desktop/fetch_ws/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -7,4 +7,6 @@
 # new environment variables
 
 # modified environment variables
-export PWD='/home/siyeon/Desktop/fetch_ws/build'
+export PATH='/opt/ros/melodic/bin:/usr/local/cuda-9.2/bin:/home/glab/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+export PKG_CONFIG_PATH='/opt/ros/melodic/lib/pkgconfig'
+export PWD='/home/glab/Desktop/fetch_ws/build'

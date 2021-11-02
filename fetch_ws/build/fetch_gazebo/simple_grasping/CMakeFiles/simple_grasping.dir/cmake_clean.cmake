@@ -3,8 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/simple_grasping.dir/src/object_support_segmentation.cpp.o"
   "CMakeFiles/simple_grasping.dir/src/shape_extraction.cpp.o"
   "CMakeFiles/simple_grasping.dir/src/shape_grasp_planner.cpp.o"
-  "/home/siyeon/Desktop/fetch_ws/devel/lib/libsimple_grasping.pdb"
-  "/home/siyeon/Desktop/fetch_ws/devel/lib/libsimple_grasping.so"
+  "/home/glab/Desktop/fetch_ws/devel/lib/libsimple_grasping.pdb"
+  "/home/glab/Desktop/fetch_ws/devel/lib/libsimple_grasping.so"
 )
 
 # Per-language clean rules from dependency scanning.

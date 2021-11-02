@@ -67,14 +67,14 @@ set(simple_grasping_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(simple_grasping_SOURCE_PREFIX /home/siyeon/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping)
-  set(simple_grasping_DEVEL_PREFIX /home/siyeon/Desktop/fetch_ws/devel)
+  set(simple_grasping_SOURCE_PREFIX /home/glab/Desktop/fetch_ws/src/fetch_gazebo/simple_grasping)
+  set(simple_grasping_DEVEL_PREFIX /home/glab/Desktop/fetch_ws/devel)
   set(simple_grasping_INSTALL_PREFIX "")
   set(simple_grasping_PREFIX ${simple_grasping_DEVEL_PREFIX})
 else()
   set(simple_grasping_SOURCE_PREFIX "")
   set(simple_grasping_DEVEL_PREFIX "")
-  set(simple_grasping_INSTALL_PREFIX /home/siyeon/Desktop/fetch_ws/install)
+  set(simple_grasping_INSTALL_PREFIX /home/glab/Desktop/fetch_ws/install)
   set(simple_grasping_PREFIX ${simple_grasping_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/siyeon/Desktop/fetch_ws/install/lib;/home/siyeon/Desktop/catkin_ws/devel/lib;/home/siyeon/Desktop/fetch_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/glab/Desktop/fetch_ws/install/lib;/home/glab/Desktop/fetch_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

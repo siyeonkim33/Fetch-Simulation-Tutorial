@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "fetch_maps"
-PROJECT_SPACE_DIR = "/home/siyeon/Desktop/fetch_ws/devel"
+PROJECT_SPACE_DIR = "/home/glab/Desktop/fetch_ws/devel"
 PROJECT_VERSION = "0.8.2"
