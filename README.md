@@ -14,3 +14,11 @@ git clone https://github.com/siyeonkim33/fetch_ws.git
 cd ~/Desktop/fetch_ws
 catkin_make
 ~~~
+
+## Execution
+
+### PoseCNN
+~~~
+roscd pose_cnn
+./experiments/scripts/ros_ycb_object_test.sh {gpu_ids}
+~~~
