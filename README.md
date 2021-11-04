@@ -25,7 +25,7 @@ Before opening gazebo world, there might be several minor errors.
 ~~~
 sudo gedit ~/.ignition/fuel/config.yaml 
 ~~~
-: Change  to **url: https://api.ignitionrobotics.org**
+: Change the line 6 from **url: https://api.ignitionfuel.org** to **url: https://api.ignitionrobotics.org**
 
 ### PoseCNN
 ~~~
