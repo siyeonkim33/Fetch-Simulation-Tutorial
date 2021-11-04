@@ -21,11 +21,11 @@ catkin_make
 Before opening gazebo world, there might be several minor errors.
 
 1. Error in REST request
-: Change initial url in the configuration file.
+: Open the configuration file.
 ~~~
 sudo gedit ~/.ignition/fuel/config.yaml 
-change to **url: https://api.ignitionrobotics.org**
 ~~~
+: Change  to **url: https://api.ignitionrobotics.org**
 
 ### PoseCNN
 ~~~
